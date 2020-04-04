@@ -27,7 +27,8 @@
 import Header from '@/components/system/Header.vue'
 export default {
   components: { Header },
-  middleware: ['auth'],
+  // middleware: ['auth-check'],
+  middleware: ['auth-check', 'auth'],
   data: () => ({
 
   }),

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Cookie from 'js-cookie'
 
 export const state = () => ({
   postsLoaded: [],
@@ -48,11 +49,33 @@ export const actions = {
       password: authData.password,
       returnSecureToken: true
     })
-      .then(res => commit('setToken', res.data.idToken))
+      .then((res) => {
+        const token = res.data.idToken
+        commit('setToken', token)
+        // to local storage
+        localStorage.setItem('token', token)
+        // to cookie
+        Cookie.set('jwt', token)
+      })
       // eslint-disable-next-line
       .catch(e => console.log(e))
   },
+  initAuth ({ commit }, req) {
+    let token = null
+    if (req) {
+      if (!req.headers.cookie) { return false }
+      const jwtCookie = req.headers.cookie.split(';').find(t => t.trim().startsWith('jwt='))
+      if (!jwtCookie) { return false }
+      token = jwtCookie.split('=')[1]
+    } else {
+      token = localStorage.getItem('token')
+      if (!token) { return false }
+    }
+    commit('setToken', token)
+  },
   logoutUser ({ commit }) {
+    localStorage.removeItem('token')
+    Cookie.remove('jwt')
     commit('destroyToken')
   },
   addPost ({ commit }, post) {

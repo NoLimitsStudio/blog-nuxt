@@ -31,7 +31,9 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~plugins/app-components.js'
+    '~plugins/app-components.js',
+    '~plugins/prism.js',
+    '~plugins/markdown.js'
   ],
   /*
   ** Nuxt.js dev-modules

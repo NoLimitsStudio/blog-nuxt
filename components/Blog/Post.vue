@@ -11,7 +11,7 @@
       </div>
       <!--        body-->
       <div class="post-body">
-        <p>{{ post.content }}</p>
+        <p v-html="post.content" />
       </div>
     </div>
   </section>
